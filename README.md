@@ -10,12 +10,12 @@
 
 ## 1. Overview
 
-This repository provides an end-to-end, reproducible implementation of **Agglomerative Hierarchical Clustering** using the minimum variance criterion (**Ward Linkage**) on 13 prenatal maternal and obstetric features.
+This repository provides an end-to-end, reproducible implementation of **Agglomerative Hierarchical Clustering** using the minimum variance criterion (**Ward Linkage**) on 13 maternal and obstetric features. The result is a retrospective segmentation of the study sample, not a prenatal prediction model.
 
 ### Engineering & Methodological Highlights:
 - **Direct Benchmark Parity:** Single Ward linkage matrix computed directly over 30,000 observations without intermediate subsampling or secondary centroid approximations.
-- **Strict Anti-Data Leakage Policy:** Postpartum outcomes (`PESO_NACIDO`, `TALLA_NACIDO`, `DUR_EMB_PARTO`) are strictly excluded from clustering features and used solely for extrinsic clinical validation.
-- **Full Reproducibility:** Dendrogram, metrics evaluation ($k \in [3, 6]$), risk profiling, and cluster heatmaps are fully rendered and persisted within the notebook.
+- **Strict Anti-Data Leakage Policy:** Postpartum outcomes (`PESO_NACIDO`, `TALLA_NACIDO`, `DUR_EMB_PARTO`) are strictly excluded from clustering features and used solely for descriptive clinical profiling. Records are not selected using `Bajo_Peso_Nacer` or `Prematuro`.
+- **Full Reproducibility:** Dendrogram, metrics evaluation ($k \in [3, 8]$), risk profiling, and cluster heatmaps are fully rendered and persisted within the notebook.
 
 ---
 
@@ -26,7 +26,7 @@ Clustering_Jerarquico/
 ├── data/
 │   └── NACIMIENTOS_CNV_LIMPIO.parquet   # Cleaned dataset (~56 MiB)
 ├── resultados/
-│   ├── dendrograma_ward.png             # Truncated dendrogram with k=4 cutoff
+│   ├── dendrograma_ward.png             # Truncated dendrogram with selected-k cutoff
 │   ├── tasas_riesgo_clusters.png        # Low birth weight and prematurity rates per cluster
 │   ├── heatmap_perfiles_z.png           # Standardized Z-Score profile heatmap
 │   ├── metricas_k.csv                   # Quantitative comparison (Silhouette & Davies-Bouldin)
@@ -68,8 +68,16 @@ jupyter notebook TB2_Clustering_Jerarquico.ipynb
 
 ---
 
-## 4. Key Clinical Findings ($k = 4$)
+## 4. How to interpret the current results
 
-* **Cluster 2 (1.70% of sample):** Isolates 100% of multiple gestations (twins/triplets) presenting **62.35% low birth weight (< 2,500 g)** and **60.00% prematurity (< 37 weeks)** — a risk rate ~10× above the national average.
-* **Cluster 0 (2.24% of sample):** Identifies geographical and infrastructure vulnerability (deliveries occurring outside healthcare facilities and non-clinical assistance).
-* **Execution Performance:** Complete notebook runs end-to-end in **~18 seconds** on consumer hardware.
+The notebook evaluates `k=3..8` and uses an explicitly configured `k=7` for the final cut. This is an informed study choice, not a universal or globally optimal value; see `resultados/metricas_k.csv` and `resultados/manifiesto_ejecucion.json` for the exact values.
+
+Clinical rates are calculated only among known outcome values and are rates of this sample, not national estimates. Review `resultados/perfiles_clusters.csv` before writing conclusions. The reported runtime (~15 seconds in the recorded execution) is evidence for that environment only, not a guarantee for every machine.
+
+---
+
+## 5. Method references
+
+- [SciPy `linkage` and Ward criterion](https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html)
+- [scikit-learn `silhouette_score`](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.silhouette_score.html)
+- [scikit-learn Silhouette analysis guide](https://scikit-learn.org/stable/auto_examples/cluster/plot_kmeans_silhouette_analysis.html)
