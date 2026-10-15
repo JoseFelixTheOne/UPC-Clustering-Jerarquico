@@ -1,0 +1,50 @@
+{
+  "proyecto": "TB2 - Machine Learning (UPC)",
+  "modelo": "Clustering Jerárquico Aglomerativo (Ward)",
+  "semilla": 42,
+  "n_muestra": 30000,
+  "k_final": 4,
+  "dataset_sha256": "24d734ca8cc39303da0c08b46007bcc5719e55208024e6e7725ee14e6f1cb55f",
+  "versiones": {
+    "python": "3.12.9",
+    "scipy": "1.18.1",
+    "sklearn": "1.9.1",
+    "pandas": "3.0.6",
+    "numpy": "2.5.4"
+  },
+  "metricas_finales": {
+    "silhouette_5k": 0.17335040867328644,
+    "davies_bouldin_30k": 1.652473499315569
+  },
+  "tiempos_segundos": {
+    "t_carga": 0.48,
+    "t_preparacion": 3.17,
+    "t_ward": 10.95,
+    "t_eval_k": 0.57,
+    "t_total_notebook": 18.14
+  },
+  "conteo_clusters": {
+    "0": 672,
+    "1": 18669,
+    "2": 510,
+    "3": 10149
+  },
+  "imputaciones": {
+    "educacion": {
+      "nulos": 18,
+      "mediana_imputada": 4.0
+    },
+    "n_embarazos": {
+      "nulos": 290,
+      "mediana_imputada": 2.0
+    },
+    "hijos_vivos": {
+      "nulos": 251,
+      "mediana_imputada": 2.0
+    },
+    "perdidas_previas": {
+      "nulos": 0,
+      "mediana_imputada": 0.0
+    }
+  }
+}
