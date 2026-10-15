@@ -18,10 +18,10 @@
   },
   "tiempos_segundos": {
     "t_carga": 0.48,
-    "t_preparacion": 3.17,
-    "t_ward": 10.95,
+    "t_preparacion": 3.15,
+    "t_ward": 10.32,
     "t_eval_k": 0.57,
-    "t_total_notebook": 18.14
+    "t_total_notebook": 18.46
   },
   "conteo_clusters": {
     "0": 672,
