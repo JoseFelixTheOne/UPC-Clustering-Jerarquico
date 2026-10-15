@@ -1,62 +1,75 @@
-# Modelo 2: Clustering Jerárquico Aglomerativo (Ward)
+# Model 2: Agglomerative Hierarchical Clustering (Ward)
 
-**Curso:** Machine Learning (1FIS0300) – TB2  
-**Caso de Estudio:** Ministerio de Salud (MINSA) – Perú  
-**Dataset:** Certificado de Nacido Vivo (`data/NACIMIENTOS_CNV_LIMPIO.parquet`, SHA-256: `24d734ca...`)  
-**Muestra:** 30 000 registros independientes (Semilla `42`)  
-**Responsable:** jfelix torres  
-
----
-
-## 1. Descripción del Modelo
-
-Este repositorio contiene la implementación del **Clustering Jerárquico Aglomerativo** utilizando el criterio de mínima varianza de **Ward** sobre 13 características maternas y obstétricas prenatales. 
-
-### Principios de Arquitectura:
-- **Benchmark Fiel:** Ajuste de un único enlace de Ward sobre 30 000 observaciones sin requerir submuestras intermedias ni aproximaciones secundarias.
-- **Regla Anti-Fuga de Datos:** Se excluyen estrictamente las variables postparto (`PESO_NACIDO`, `TALLA_NACIDO`, `DUR_EMB_PARTO`) como atributos de agrupamiento.
-- **Reproducibilidad Total:** Salidas, métricas ($k \in [3, 6]$) y gráficos renderizados directamente en el notebook.
+**Course:** Machine Learning (1FIS0300) – TB2  
+**Case Study:** Ministry of Health of Peru (MINSA)  
+**Dataset:** Live Birth Certificates (`data/NACIMIENTOS_CNV_LIMPIO.parquet`, SHA-256: `24d734ca...`)  
+**Sample Size:** 30,000 independent records (Seed: `42`)  
+**Author:** jfelix torres  
 
 ---
 
-## 2. Estructura del Repositorio
+## 1. Overview
+
+This repository provides an end-to-end, reproducible implementation of **Agglomerative Hierarchical Clustering** using the minimum variance criterion (**Ward Linkage**) on 13 prenatal maternal and obstetric features.
+
+### Engineering & Methodological Highlights:
+- **Direct Benchmark Parity:** Single Ward linkage matrix computed directly over 30,000 observations without intermediate subsampling or secondary centroid approximations.
+- **Strict Anti-Data Leakage Policy:** Postpartum outcomes (`PESO_NACIDO`, `TALLA_NACIDO`, `DUR_EMB_PARTO`) are strictly excluded from clustering features and used solely for extrinsic clinical validation.
+- **Full Reproducibility:** Dendrogram, metrics evaluation ($k \in [3, 6]$), risk profiling, and cluster heatmaps are fully rendered and persisted within the notebook.
+
+---
+
+## 2. Repository Structure
 
 ```text
 Clustering_Jerarquico/
 ├── data/
-│   └── NACIMIENTOS_CNV_LIMPIO.parquet   # Dataset base (~56 MiB)
+│   └── NACIMIENTOS_CNV_LIMPIO.parquet   # Cleaned dataset (~56 MiB)
 ├── resultados/
-│   ├── dendrograma_ward.png             # Dendrograma truncado con corte k=4
-│   ├── tasas_riesgo_clusters.png        # Tasas de bajo peso y prematuridad por cluster
-│   ├── heatmap_perfiles_z.png           # Mapa de calor de perfiles estandarizados (Z-Score)
-│   ├── metricas_k.csv                   # Comparativa cuantitativa (Silueta y Davies-Bouldin)
-│   ├── perfiles_clusters.csv            # Estadísticas clínicas por cluster
-│   ├── etiquetas_30k.csv                # Asignación de cluster para las 30 000 observaciones
-│   └── manifiesto_ejecucion.json        # Manifiesto técnico con hashes, tiempos y librerías
-├── TB2_Clustering_Jerarquico.ipynb      # Notebook ejecutable con todos los outputs integrados
-├── requirements.txt                     # Dependencias mínimas
-└── README.md
+│   ├── dendrograma_ward.png             # Truncated dendrogram with k=4 cutoff
+│   ├── tasas_riesgo_clusters.png        # Low birth weight and prematurity rates per cluster
+│   ├── heatmap_perfiles_z.png           # Standardized Z-Score profile heatmap
+│   ├── metricas_k.csv                   # Quantitative comparison (Silhouette & Davies-Bouldin)
+│   ├── perfiles_clusters.csv            # Clinical risk statistics per cluster
+│   ├── etiquetas_30k.csv                # Cluster assignments for all 30,000 observations
+│   └── manifiesto_ejecucion.json        # Execution manifest (SHA-256, timing, environment)
+├── TB2_Clustering_Jerarquico.ipynb      # Self-contained notebook with all outputs embedded
+├── requirements.txt                     # Pinned project dependencies
+└── README.md                            # Project documentation
 ```
 
 ---
 
-## 3. Guía de Ejecución
+## 3. Getting Started
 
-### Opción A: Con `uv` (Recomendado)
+### Prerequisites
+- Python 3.10+
+- [`uv`](https://github.com/astral-sh/uv) (recommended) or standard `pip`
+
+### Option A: Using `uv` (Recommended)
 ```bash
-# 1. Crear entorno virtual
+# 1. Create a dedicated virtual environment
 uv venv .venv
 
-# 2. Instalar dependencias
+# 2. Install dependencies
 uv pip install -r requirements.txt
 
-# 3. Iniciar Jupyter o abrir en VS Code seleccionando el kernel .venv
+# 3. Launch Jupyter or open in VS Code (select .venv kernel)
 jupyter notebook TB2_Clustering_Jerarquico.ipynb
 ```
 
-### Opción B: Con Python estándar
+### Option B: Using standard Python
 ```bash
 python3 -m venv .venv
-source .venv/bin/activate  # En Windows: .venv\Scripts\activate
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 pip install -r requirements.txt
+jupyter notebook TB2_Clustering_Jerarquico.ipynb
 ```
+
+---
+
+## 4. Key Clinical Findings ($k = 4$)
+
+* **Cluster 2 (1.70% of sample):** Isolates 100% of multiple gestations (twins/triplets) presenting **62.35% low birth weight (< 2,500 g)** and **60.00% prematurity (< 37 weeks)** — a risk rate ~10× above the national average.
+* **Cluster 0 (2.24% of sample):** Identifies geographical and infrastructure vulnerability (deliveries occurring outside healthcare facilities and non-clinical assistance).
+* **Execution Performance:** Complete notebook runs end-to-end in **~18 seconds** on consumer hardware.
