@@ -4,7 +4,7 @@
 **Case Study:** Ministry of Health of Peru (MINSA)  
 **Dataset:** Live Birth Certificates (`data/NACIMIENTOS_CNV_LIMPIO.parquet`, SHA-256: `24d734ca...`)  
 **Sample Size:** 30,000 independent records (Seed: `42`)  
-**Author:** jfelix torres  
+**Author:** Felix Torres Terreros  
 
 ---
 
